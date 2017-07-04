@@ -9,7 +9,7 @@
   <div class="col-md-8 col-md-offset-2">
     <h1>登録情報修正</h1>
     <p><strong>修正する箇所のみ入力してください</strong></p>
-    <from action="{% url 'talkapp:user_update' %}" method="post" enctype="multipart/form-data">
+    <form action="{% url 'talkapp:user_update' %}" method="post" enctype="multipart/form-data">
       <div class="form-group">
         <label for="Name">名前</label>
         <input type="text" name="name" class="form-control" id="Name">
@@ -28,7 +28,7 @@
       </div>
       <button type="submit" class="btn btn-primary">登録</button>
       {% csrf_token %}
-    </from>
+    </form>
   </div>
 </div>
 {% endblock %}

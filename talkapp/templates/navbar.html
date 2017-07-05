@@ -10,13 +10,18 @@
       <a class="navbar-brand" href="{% url 'talkapp:home' %}">ホーム</a>
     </div>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      {% if user.is_authenticated %}
       <ul class="nav navbar-nav">
         <li><a href="{% url 'talkapp:post_index' %}">トーク画面</a></li>
       </ul>
+      {% endif %}
       <ul class="nav navbar-nav navbar-right">
+        {% if user.is_authenticated %}
         <li><a href="{% url 'talkapp:user_edit' %}">Testさんようこそ</a></li>
         <li><a href="{% url 'talkapp:getlogout' %}">ログアウト</a></li>
+        {% else %}
         <li><a href="{% url 'talkapp:getlogin' %}">ログイン</a></li>
+        {% endif %}
       </ul>
     </div>
   </div>

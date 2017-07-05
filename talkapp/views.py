@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.conf.urls.static import static
 #ユーザー認証
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 from datetime import datetime
 
@@ -106,7 +106,23 @@ def getlogin(request):
     return render(request, 'talkapp/getlogin.html')
 
 def postlogin(request):
-    return redirect('talkapp:post_index')
+    email = request.POST["email"]
+    password = request.POST["password"]
+
+    try:
+        username = User.objects.get(email=email).username
+    except User.DoesNotExist:
+        username = None
+
+    if username is not None:
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return redirect('talkapp:post_index')
+
+    return render(request, 'talkapp/getlogin.html')
 
 def getlogout(request):
+    logout(request)
     return render(request, 'talkapp/home.html')

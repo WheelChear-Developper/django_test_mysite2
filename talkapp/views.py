@@ -56,7 +56,7 @@ def post_store(request):
 
 def post_delete_all(request):
     PostMessage.objects.all().delete()
-#    return redirect('post_index')
+    return redirect('talkapp:post_index')
 
 
 def getlogin(request):

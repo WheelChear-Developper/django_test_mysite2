@@ -5,3 +5,23 @@ body {
 .btn-space-30 {
     margin-top: 30px;
 }
+
+a.label-required {
+    font-size: 10px;
+    padding: 3px;
+    margin: 2px;
+    background-color: red;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+label.label-required-text {
+    color: black;
+    padding: 3px;
+    padding-left: 0px;
+    margin: 2px;
+    margin-left: 0px;
+    font-size: 15px;
+}

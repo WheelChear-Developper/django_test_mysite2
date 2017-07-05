@@ -3,6 +3,8 @@ from talkapp.models import PostMessage, Profile
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.conf.urls.static import static
+#ユーザー認証
+from django.contrib.auth import authenticate
 
 from datetime import datetime
 
@@ -54,10 +56,10 @@ def user_store(request):
     profile.user = user
     profile.save()
 
-#    user = authenticate(username=username, password=password)
-#    if user is not None:
-#        if user.is_active:
-#            login(request, user)
+    check_user = authenticate(username=username, password=password)
+    if check_user is not None:
+        if check_user.is_active:
+            login(request, check_user)
 
     return redirect('talkapp:post_index')
 

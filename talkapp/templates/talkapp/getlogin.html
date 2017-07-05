@@ -8,7 +8,7 @@
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
     <h1>ログイン</h1>
-    <from action="{% url 'talkapp:postlogin' %}" method="post">
+    <form action="{% url 'talkapp:postlogin' %}" method="post">
       <div class="form-group">
         <label for="Email">メール</label>
         <input type="text" name="email" class="form-control" id="Email" placeholder="Email">
@@ -19,7 +19,7 @@
       </div>
       <button type="submit" class="btn btn-primary">ログイン</button>
       {% csrf_token %}
-    </from>
+    </form>
   </div>
 </div>
 {% endblock %}

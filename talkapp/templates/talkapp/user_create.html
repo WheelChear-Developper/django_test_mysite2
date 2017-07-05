@@ -8,7 +8,6 @@
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
     <h1>登録</h1>
-    {% url 'talkapp:user_store' %}
     <form action="{% url 'talkapp:user_store' %}" method="post" enctype="multipart/form-data">
       <div class="form-group">
         <label for="Name">名前</label>

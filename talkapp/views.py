@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 from talkapp.models import PostMessage, Profile
 from django.contrib.auth.models import User
-
 from django.conf import settings
 from django.conf.urls.static import static
 
+from datetime import datetime
 
 UPLOAD_DIR = settings.MEDIA_ROOT + "/images/"
 
@@ -30,13 +30,23 @@ def user_store(request):
 
     print("\033[94m", "UPLOAD_DIR = ", UPLOAD_DIR, "\033[0m")
 
-    now = time.time()
-#    image_file = request.FILES['file']
-#    path = UPLOAD_DIR + str(now) + image_file.name
-#    destination = open(path, 'wb+')
-#    for chunck in image_file.chunk():
-#        destination.write(chunck)
-#    destination.close()
+    #システム時間取得
+    now = datetime.now().strftime("%Y%m%d-%H%M%S")
+    print("\033[94m", "system time = ", now, "\033[0m")
+
+    #ファイル名取得（未設定ではエラー）
+    image_file = request.FILES['file']
+    print("\033[94m", "image_file = ", image_file, "\033[0m")
+
+    #パス設定
+    path = UPLOAD_DIR + str(now) + image_file.name
+    print("\033[94m", "path = ", path, "\033[0m")
+
+    #ファイル書き込み
+    destination = open(path, 'wb+')
+    for chunk in image_file.chunks():
+        destination.write(chunk)
+    destination.close()
 
 #    profile = profile()
 #    profile.image = str(now) + image_file.name

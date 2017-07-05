@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.conf.urls.static import static
 #ユーザー認証
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
 
 from datetime import datetime
 

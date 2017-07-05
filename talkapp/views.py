@@ -48,10 +48,11 @@ def user_store(request):
         destination.write(chunk)
     destination.close()
 
-#    profile = profile()
-#    profile.image = str(now) + image_file.name
-#    profile.user = user
-#    profile.save()
+    #プロファイルデータ保存（ユーザー番号に紐づく画像ファイル設定）
+    profile = Profile()
+    profile.image = str(now) + image_file.name
+    profile.user = user
+    profile.save()
 
 #    user = authenticate(username=username, password=password)
 #    if user is not None:

@@ -7,7 +7,10 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
+      {% if user.is_authenticated %}
+      {% else %}
       <a class="navbar-brand" href="{% url 'talkapp:home' %}">ホーム</a>
+      {% endif %}
     </div>
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       {% if user.is_authenticated %}
@@ -17,7 +20,8 @@
       {% endif %}
       <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}
-        <li><a href="{% url 'talkapp:user_edit' %}">Testさんようこそ</a></li>
+        <li><a href="{% url 'talkapp:user_edit' %}">{{ user.username }} さんようこそ</a></li>
+        <li><a href="{% url 'talkapp:user_edit' %}">ユーザー情報更新</a></li>
         <li><a href="{% url 'talkapp:getlogout' %}">ログアウト</a></li>
         {% else %}
         <li><a href="{% url 'talkapp:getlogin' %}">ログイン</a></li>

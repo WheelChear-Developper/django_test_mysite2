@@ -16,7 +16,7 @@ import os
 
 from datetime import datetime
 
-UPLOAD_DIR = settings.MEDIA_ROOT + "/images/"
+UPLOAD_DIR = os.path.join(settings.BASE_DIR, 'talkapp') + "/static/images/"
 
 def home(request):
     return render(request, 'talkapp/home.html')
@@ -244,10 +244,6 @@ def user_update(request):
                 login(request, user)
 
     return redirect('talkapp:post_index')
-
-class Post:
-    def __init__(self):
-        self.message = ""
 
 def post_index(request):
     posts = PostMessage.objects.all()

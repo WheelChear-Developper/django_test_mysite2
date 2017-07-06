@@ -26,24 +26,25 @@ def user_create(request):
 
 def user_store(request):
 
+    # 入力値取得
     username = request.POST["name"]
     email = request.POST["email"]
     password = request.POST["password"]
 
-    #画像ファイルセット
+    # 画像ファイルセット
     if 'file' in request.FILES:
         image_file = request.FILES['file']
     else:
         image_file = ''
 
-    #入力したユーザー情報
+    # 入力したユーザー情報
     print("\033[94m", "username = ", username, "\033[0m")
     print("\033[94m", "email = ", email, "\033[0m")
     print("\033[94m", "password = ", password, "\033[0m")
     print("\033[94m", "image_file = ", image_file, "\033[0m")
     print("\033[94m", "UPLOAD_DIR = ", UPLOAD_DIR, "\033[0m")
 
-    #名前入力チェック
+    # 名前入力チェック
     if username == '':
         form = forms.UserCreateForm(request.GET or None)
         contdir = {
@@ -56,7 +57,7 @@ def user_store(request):
         }
         return render(request, 'talkapp/user_create.html', contdir)
 
-    #メールアドレス入力チェック
+    # メールアドレス入力チェック
     if email == '':
         form = forms.UserCreateForm(request.GET or None)
         contdir = {
@@ -69,7 +70,7 @@ def user_store(request):
         }
         return render(request, 'talkapp/user_create.html', contdir)
 
-    #パスワード入力チェック
+    # パスワード入力チェック
     if password == '':
         form = forms.UserCreateForm(request.GET or None)
         contdir = {
@@ -82,11 +83,11 @@ def user_store(request):
         }
         return render(request, 'talkapp/user_create.html', contdir)
 
-    #ユーザー情報登録
+    # ユーザー情報登録
     user = User.objects.create_user(username, email, password)
     user.save()
 
-    #システム時間取得
+    # システム時間取得
     now = datetime.now().strftime("%Y%m%d-%H%M%S")
     print("\033[94m", "system time = ", now, "\033[0m")
 
@@ -116,7 +117,7 @@ def user_store(request):
         profile.save()
     print("\033[94m", "Save Image PathFile = ", path, "\033[0m")
 
-    #ログイン処理
+    # ログイン処理
     check_user = authenticate(username=username, password=password)
     if check_user is not None:
         if check_user.is_active:
@@ -125,35 +126,83 @@ def user_store(request):
     return redirect('talkapp:post_index')
 
 def user_edit(request):
+
     user = request.user
     context = {
-        'user' : user
+        'user' : user,
+        'username': user.username,
+        'email': user.email,
+        'user_image': user.profile.image,
     }
     return render(request, 'talkapp/user_edit.html' , context)
 
 def user_update(request):
+
+    # ログインユーザー情報取得
     user = request.user
 
-    #名前が渡されてくれた場合、名前変更
+    # 名前が渡されてくれた場合、名前変更
     if request.POST["name"] != '':
         user.username = request.POST["name"]
-    #メールアドレスが渡されてくれた場合、メールアドレス変更
+    # メールアドレスが渡されてくれた場合、メールアドレス変更
     if request.POST["email"] != '':
         user.email = request.POST["email"]
-    #パスワードが渡されてくれた場合、パスワード変更
-    if request.POST["password"] != '':
-        user.set_password(request.POST["password"])
+    # パスワードが渡されてくれた場合、パスワード変更
+#    if request.POST["password"] != '':
+#        user.set_password(request.POST["password"])
 
-    #ユーザー情報保存
+    # 現在パスワード入力チェック
+    if request.POST["check_password"] == '':
+        form = forms.UserEditForm(request.GET or None)
+        contdir = {
+            'form': form,
+            'message_title': 'エラー：',
+            'message': '現在のパスワードが入力されていません。',
+            'username': user.username,
+            'email': user.email,
+        }
+        return render(request, 'talkapp/user_edit.html', contdir)
+
+    # パスワード入力チェック(現在のメールと同じであるか)
+    if user.check_password(request.POST["check_password"]) == False:
+        form = forms.UserEditForm(request.GET or None)
+        contdir = {
+            'form': form,
+            'message_title': 'エラー：',
+            'message': '現在のパスワードが間違っています。',
+            'username': user.username,
+            'email': user.email,
+        }
+        return render(request, 'talkapp/user_edit.html', contdir)
+
+    # パスワード入力チェック
+    if request.POST["password"] == '':
+        form = forms.UserEditForm(request.GET or None)
+        contdir = {
+            'form': form,
+            'message_title': 'エラー：',
+            'message': '新しいパスワードが入力されていません。',
+            'username': user.username,
+            'email': user.email,
+        }
+        return render(request, 'talkapp/user_edit.html', contdir)
+    # パスワード更新
+    user.set_password(request.POST["password"])
+
+    # ユーザー情報保存
     user.save()
 
-    #プロファイル画像更新
+    # プロファイル画像更新
     if 'file' in request.FILES:
-        #削除ファイル
+
+        # 画像ファイル指定での更新
+        # 削除ファイル
         print("\033[94m", "delete_image_file = ", user.profile.image, "\033[0m")
-        #更新前のプロファイル画像を削除
+        # 更新前のプロファイル画像を削除
         old_image_file = UPLOAD_DIR + user.profile.image
-        os.remove(old_image_file)
+
+        if user.profile.image != 'no_image.png':
+            os.remove(old_image_file)
 
         # システム時間取得
         now = datetime.now().strftime("%Y%m%d-%H%M%S")
@@ -175,6 +224,16 @@ def user_update(request):
 
         # プロファイルデータ保存（ユーザー番号に紐づく画像ファイル設定）
         user.profile.image = str(now) + image_file.name
+        user.profile.save()
+    else:
+
+        # 画像ファイルの初期値設定
+        # ファイル名取得（未設定ではエラー）
+        image_file = 'no_image.png'
+        print("\033[94m", "image_file = ", image_file, "\033[0m")
+
+        # プロファイルデータ保存（ユーザー番号に紐づく画像ファイル設定）
+        user.profile.image = image_file
         user.profile.save()
 
     #ログイン処理

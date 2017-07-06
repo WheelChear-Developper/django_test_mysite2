@@ -5,22 +5,26 @@
 {% endblock %}
 
 {% block content %}
+  {{ message_title }}{{ message }}
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
     <h1>登録</h1>
     <form action="{% url 'talkapp:user_store' %}" method="post" enctype="multipart/form-data">
       <div class="form-group">
+        <a class="label label-required">必須</a>
         <label class="label-required-text" for="Name">名前</label>
-        <input type="text" name="name" class="form-control" id="Name" placeholder="Name">
+        <input type="text" name="name" class="form-control" id="Name" placeholder="Name" value={{ username }}>
       </div>
       <div class="form-group">
+        <a class="label label-required">必須</a>
         <label class="label-required-text" for="Email">メール</label>
         <input type="text" name="email" style="visibility: hidden; top: -100px; left: -100px;" />
-        <input type="text" name="email" class="form-control" id="Email" placeholder="Email">
+        <input type="text" name="email" class="form-control" id="Email" placeholder="Email" value={{ email }}>
       </div>
       <div class="form-group">
+        <a class="label label-required">必須</a>
         <label class="label-required-text" for="Password">パスワード</label>
-        <input type="password" name="password" class="form-control" id="Password" placeholder="Password">
+        <input type="password" name="password" class="form-control" id="Password" placeholder="Password" value={{ password }}>
       </div>
       <div class="form-group">
         <label class="label-required-text" for="ImageFile">プロフィール画像ファイル</label>

@@ -1,10 +1,16 @@
 from django.shortcuts import render, redirect
-from talkapp.models import PostMessage, Profile
+#アカウント情報取得用
 from django.contrib.auth.models import User
+#プロジェクト設定取得用
 from django.conf import settings
-from django.conf.urls.static import static
 #ユーザー認証
 from django.contrib.auth import authenticate, login, logout
+
+#モデル取得用
+from talkapp.models import PostMessage, Profile
+
+#エラー時の処理用
+from . import forms
 #サーバーの画像ファイル削除必要用
 import os
 
@@ -19,45 +25,98 @@ def user_create(request):
     return render(request, 'talkapp/user_create.html')
 
 def user_store(request):
+
     username = request.POST["name"]
     email = request.POST["email"]
     password = request.POST["password"]
+
+    #画像ファイルセット
+    if 'file' in request.FILES:
+        image_file = request.FILES['file']
+    else:
+        image_file = ''
 
     #入力したユーザー情報
     print("\033[94m", "username = ", username, "\033[0m")
     print("\033[94m", "email = ", email, "\033[0m")
     print("\033[94m", "password = ", password, "\033[0m")
+    print("\033[94m", "image_file = ", image_file, "\033[0m")
+    print("\033[94m", "UPLOAD_DIR = ", UPLOAD_DIR, "\033[0m")
+
+    #名前入力チェック
+    if username == '':
+        form = forms.UserCreateForm(request.GET or None)
+        contdir = {
+            'form': form,
+            'message_title': 'エラー：',
+            'message': '名前が入力されていません',
+            'username': username,
+            'email': email,
+            'password': password,
+        }
+        return render(request, 'talkapp/user_create.html', contdir)
+
+    #メールアドレス入力チェック
+    if email == '':
+        form = forms.UserCreateForm(request.GET or None)
+        contdir = {
+            'form': form,
+            'message_title': 'エラー：',
+            'message': 'メールアドレスが入力されていません',
+            'username': username,
+            'email': email,
+            'password': password,
+        }
+        return render(request, 'talkapp/user_create.html', contdir)
+
+    #パスワード入力チェック
+    if password == '':
+        form = forms.UserCreateForm(request.GET or None)
+        contdir = {
+            'form': form,
+            'message_title': 'エラー：',
+            'message': 'パスワードが入力されていません',
+            'username': username,
+            'email': email,
+            'password': password,
+        }
+        return render(request, 'talkapp/user_create.html', contdir)
 
     #ユーザー情報登録
     user = User.objects.create_user(username, email, password)
     user.save()
 
-    print("\033[94m", "UPLOAD_DIR = ", UPLOAD_DIR, "\033[0m")
-
     #システム時間取得
     now = datetime.now().strftime("%Y%m%d-%H%M%S")
     print("\033[94m", "system time = ", now, "\033[0m")
 
-    #ファイル名取得（未設定ではエラー）
-    image_file = request.FILES['file']
-    print("\033[94m", "image_file = ", image_file, "\033[0m")
+    # パス設定(無い場合は、初期画像セット)
+    if image_file == '':
+        path = UPLOAD_DIR + 'no_image.png'
 
-    #パス設定
-    path = UPLOAD_DIR + str(now) + image_file.name
-    print("\033[94m", "path = ", path, "\033[0m")
+        # プロファイルデータ保存（ユーザー番号に紐づく画像ファイル設定）
+        profile = Profile()
+        profile.image = 'no_image.png'
+        profile.user = user
+        profile.save()
 
-    #ファイル書き込み
-    destination = open(path, 'wb+')
-    for chunk in image_file.chunks():
-        destination.write(chunk)
-    destination.close()
+    else:
+        path = UPLOAD_DIR + str(now) + image_file.name
 
-    #プロファイルデータ保存（ユーザー番号に紐づく画像ファイル設定）
-    profile = Profile()
-    profile.image = str(now) + image_file.name
-    profile.user = user
-    profile.save()
+        # ファイル書き込み
+        destination = open(path, 'wb+')
+        for chunk in image_file.chunks():
+            destination.write(chunk)
+        destination.close()
 
+        # プロファイルデータ保存（ユーザー番号に紐づく画像ファイル設定）
+        profile = Profile()
+        profile.image = str(now) + image_file.name
+        profile.user = user
+        profile.save()
+    print("\033[94m", "Save Image PathFile = ", path, "\033[0m")
+
+    #ログイン処理
     check_user = authenticate(username=username, password=password)
     if check_user is not None:
         if check_user.is_active:

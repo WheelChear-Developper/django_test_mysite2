@@ -10,12 +10,12 @@
     <h1>ログイン</h1>
     <form action="{% url 'talkapp:postlogin' %}" method="post">
       <div class="form-group">
-        <label for="Email">メール</label>
+        <label class="label-required-text" for="Email">メール</label>
         <input type="text" name="email" style="visibility: hidden; top: -100px; left: -100px;" />
         <input type="text" name="email" class="form-control" id="Email" placeholder="Email">
       </div>
       <div class="form-group">
-        <label for="Password">パスワード</label>
+        <label class="label-required-text" for="Password">パスワード</label>
         <input type="password" name="password" class="form-control" id="Password" placeholder="Password">
       </div>
       <button type="submit" class="btn btn-primary">ログイン</button>

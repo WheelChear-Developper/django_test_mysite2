@@ -1,29 +1,33 @@
 from django.shortcuts import render, redirect
-#アカウント情報取得用
+# アカウント情報取得用
 from django.contrib.auth.models import User
-#プロジェクト設定取得用
+# プロジェクト設定取得用
 from django.conf import settings
-#ユーザー認証
+# ユーザー認証
 from django.contrib.auth import authenticate, login, logout
-
-#モデル取得用
-from talkapp.models import PostMessage, Profile
-
-#エラー時の処理用
+# エラー時の処理用
 from . import forms
-#サーバーの画像ファイル削除必要用
+# サーバーの画像ファイル削除必要用
 import os
-
+#時間情報用
 from datetime import datetime
 
+# モデル取得用
+from talkapp.models import PostMessage, Profile
+
+
+# FileUploadFolder
 UPLOAD_DIR = os.path.join(settings.BASE_DIR, 'talkapp') + "/static/images/"
 
+# Home
 def home(request):
     return render(request, 'talkapp/home.html')
 
+# UserInfoNew_Screen
 def user_create(request):
     return render(request, 'talkapp/user_create.html')
 
+# UserInfoNewSet
 def user_store(request):
 
     # 入力値取得
@@ -125,6 +129,7 @@ def user_store(request):
 
     return redirect('talkapp:post_index')
 
+# UserInfo_Screen
 def user_edit(request):
 
     user = request.user
@@ -136,6 +141,7 @@ def user_edit(request):
     }
     return render(request, 'talkapp/user_edit.html' , context)
 
+# UserInfoUpdate
 def user_update(request):
 
     # ログインユーザー情報取得
@@ -245,39 +251,15 @@ def user_update(request):
 
     return redirect('talkapp:post_index')
 
-def post_index(request):
-    posts = PostMessage.objects.all()
 
-    context = {
-        'posts' : posts
-    }
-    return render(request, 'talkapp/post_index.html', context)
-
-def post_create(request):
-    return render(request, 'talkapp/post_create.html')
-
-def post_store(request):
-    post = PostMessage()
-    post.message = request.POST["message"]
-
-    #ログインしていないと、NULLとなる(ADMINログイン)
-    print("\033[94m", "User = ", request.user, "\033[0m")
-    post.user = request.user
-
-    post.save()
-
-    return redirect('talkapp:post_index')
-
-
-def post_delete_all(request):
-    PostMessage.objects.all().delete()
-    return redirect('talkapp:post_index')
-
-
+# GetLogin_Screen
 def getlogin(request):
+
     return render(request, 'talkapp/getlogin.html')
 
+# SignLogin
 def postlogin(request):
+
     email = request.POST["email"]
     password = request.POST["password"]
 
@@ -295,6 +277,45 @@ def postlogin(request):
 
     return render(request, 'talkapp/getlogin.html')
 
+# Loginout
 def getlogout(request):
+
     logout(request)
     return render(request, 'talkapp/home.html')
+
+
+# PostIndex_Screen
+def post_index(request):
+
+    # 登録情報読み込み
+    posts = PostMessage.objects.all()
+    context = {
+        'posts' : posts
+    }
+    return render(request, 'talkapp/post_index.html', context)
+
+# PostScreen
+def post_create(request):
+
+    return render(request, 'talkapp/post_create.html')
+
+# PostSave
+def post_store(request):
+
+    post = PostMessage()
+    post.message = request.POST["message"]
+
+    # ログインしていないと、NULLとなる(ADMINログイン)
+    print("\033[94m", "User = ", request.user, "\033[0m")
+    post.user = request.user
+
+    # 情報保存
+    post.save()
+
+    return redirect('talkapp:post_index')
+
+# PostAllDelete
+def post_delete_all(request):
+
+    PostMessage.objects.all().delete()
+    return redirect('talkapp:post_index')

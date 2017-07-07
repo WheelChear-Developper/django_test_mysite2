@@ -1,14 +1,14 @@
 {% extends "base.html" %}
 
 {% block title %}
-登録
+サインアップ
 {% endblock %}
 
 {% block content %}
-  {{ message_title }}{{ message }}
 <div class="row">
   <div class="col-md-8 col-md-offset-2">
-    <h1>登録</h1>
+    <h1>サインアップ</h1>
+    <h6 class="text-danger">{{ message_title }}{{ message }}</h6>
     <form action="{% url 'talkapp:user_store' %}" method="post" enctype="multipart/form-data">
       <div class="form-group">
         <a class="label label-required">必須</a>

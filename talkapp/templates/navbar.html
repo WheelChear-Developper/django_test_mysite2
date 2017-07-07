@@ -43,15 +43,15 @@
       <ul class="nav navbar-nav navbar-right">
         {% if user.is_authenticated %}{% load staticfiles %}
         <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="{{ STATIC_URL }}images/{{ user.profile.image }}" width=24 height=24> {{ user.username }} さんようこそ<span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="{{ STATIC_URL }}images/{{ user.profile.image }}" width=24 height=24> {{ user.username }}<span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="{% url 'talkapp:user_edit' %}">ユーザー情報更新</a></li>
+              <li><a href="{% url 'talkapp:user_edit' %}">UserInfo Update</a></li>
               <li class="divider"></li>
-              <li><a href="{% url 'talkapp:getlogout' %}">ログアウト</a></li>
+              <li><a href="{% url 'talkapp:getlogout' %}">Logout</a></li>
             </ul>
         </li>
         {% else %}
-        <li><a href="{% url 'talkapp:getlogin' %}">ログイン</a></li>
+        <li><a href="{% url 'talkapp:getlogin' %}">Login</a></li>
         {% endif %}
       </ul>
     </div>

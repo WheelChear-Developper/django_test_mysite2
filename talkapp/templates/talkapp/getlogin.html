@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
 {% block title %}
-サインイン
+Sign in
 {% endblock %}
 
 {% block content %}
 <div class="form-wrapper">
-  <h1>サインイン</h1>
+  <h1>Sign in</h1>
   {{ message_title }}{{ message }}
   <form action="{% url 'talkapp:postlogin' %}" method="post">
     <div class="form-item">
@@ -18,7 +18,7 @@
       <input type="password" name="password" required="required" placeholder="Password"></input>
     </div>
     <div class="button-panel">
-      <input type="submit" class="button btn-primary" title="Sign In" value="サインイン"></input>
+      <input type="submit" class="button btn-primary" title="Sign In" value="Sign in"></input>
       {% csrf_token %}
     </div>
   </form>

@@ -29,7 +29,8 @@
         <input type="password" name="password" class="form-control" id="Password">
       </div>
       <div class="form-group">
-        <label class="label-required-text" for="ImageFile">プロフィール画像 [</label>{{ user_image }}<label class="label-required-text" for="ImageFile">]</label>
+        <label class="label-required-text" for="ImageFile">プロフィール画像</label><br>
+        <img class="" src="/static/images/{{ user_image }}" width=64 height=64>
         <input type="file" name="file" id="ImageFile">
       </div>
       <button type="submit" class="btn btn-primary">登録</button>

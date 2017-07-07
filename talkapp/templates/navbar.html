@@ -19,8 +19,8 @@
       </ul>
       {% endif %}
       <ul class="nav navbar-nav navbar-right">
-        {% if user.is_authenticated %}
-        <li><a href="{% url 'talkapp:user_edit' %}"><img src="/static/images/{{ user.profile.image }}" width=28 height=28> {{ user.username }} さんようこそ</a></li>
+        {% if user.is_authenticated %}{% load staticfiles %}
+        <li><a href="{% url 'talkapp:user_edit' %}"><img src="{{ STATIC_URL }}images/{{ user.profile.image }}" width=28 height=28> {{ user.username }} さんようこそ</a></li>
         <li><a href="{% url 'talkapp:user_edit' %}">ユーザー情報更新</a></li>
         <li><a href="{% url 'talkapp:getlogout' %}">ログアウト</a></li>
         {% else %}

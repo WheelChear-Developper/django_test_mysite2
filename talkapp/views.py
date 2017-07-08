@@ -21,7 +21,7 @@ UPLOAD_DIR = os.path.join(settings.BASE_DIR, 'talkapp') + "/static/images/"
 
 # Home
 def home(request):
-    return render(request, 'talkapp/home.html')
+    return render(request, 'talkapp/home.html', {'url': 'home.html'})
 
 # UserInfoNew_Screen
 def user_create(request):
@@ -290,7 +290,8 @@ def post_index(request):
     # 登録情報読み込み
     posts = PostMessage.objects.all()
     context = {
-        'posts' : posts
+        'posts' : posts,
+        'url' : 'post_index.html'
     }
     return render(request, 'talkapp/post_index.html', context)
 

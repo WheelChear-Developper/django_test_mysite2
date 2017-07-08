@@ -13,8 +13,16 @@
     <div class="collapse navbar-collapse" id="nav_target">
       <ul class="nav navbar-nav">
         <!-- リンクのみ -->
+        {% if url == 'home.html' %}
         <li class="active"><a href="{% url 'talkapp:home' %}">Home</a></li>
-          <li><a href="{% url 'talkapp:post_index' %}">List</a></li>
+        {% else %}
+        <li><a href="{% url 'talkapp:home' %}">Home</a></li>
+        {% endif %}
+        {% if url == 'post_index.html' %}
+        <li class="active"><a href="{% url 'talkapp:post_index' %}">List</a></li>
+        {% else %}
+        <li><a href="{% url 'talkapp:post_index' %}">List</a></li>
+        {% endif %}
         <!-- Nav3 ドロップダウン -->
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Nav3 <span class="caret"></span></a>

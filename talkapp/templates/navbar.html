@@ -13,10 +13,7 @@
     <div class="collapse navbar-collapse" id="nav_target">
       <ul class="nav navbar-nav">
         <!-- リンクのみ -->
-        {% if user.is_authenticated %}
-        {% else %}
         <li class="active"><a href="{% url 'talkapp:home' %}">Home</a></li>
-        {% endif %}
           <li><a href="{% url 'talkapp:post_index' %}">List</a></li>
         <!-- Nav3 ドロップダウン -->
           <li class="dropdown">

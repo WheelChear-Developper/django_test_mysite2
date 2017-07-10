@@ -26,7 +26,7 @@ def home(request):
 
 # UserInfoNew_Screen
 def user_create(request):
-    
+
     agent = request.META.get("HTTP_USER_AGENT", "")
     # ユーザエージェントの情報を取得します。
     user_agent = parse_ua(agent)
@@ -50,13 +50,6 @@ def user_store(request):
         image_file = request.FILES['file']
     else:
         image_file = ''
-
-    # 入力したユーザー情報
-    print("\033[94m", "username = ", username, "\033[0m")
-    print("\033[94m", "email = ", email, "\033[0m")
-    print("\033[94m", "password = ", password, "\033[0m")
-    print("\033[94m", "image_file = ", image_file, "\033[0m")
-    print("\033[94m", "UPLOAD_DIR = ", UPLOAD_DIR, "\033[0m")
 
     # 名前入力チェック
     if username == '':
@@ -96,6 +89,13 @@ def user_store(request):
             'password': password,
         }
         return render(request, 'talkapp/user_create.html', contdir)
+
+    # 入力したユーザー情報
+    print("\033[94m", "username = ", username, "\033[0m")
+    print("\033[94m", "email = ", email, "\033[0m")
+    print("\033[94m", "password = ", password, "\033[0m")
+    print("\033[94m", "image_file = ", image_file, "\033[0m")
+    print("\033[94m", "UPLOAD_DIR = ", UPLOAD_DIR, "\033[0m")
 
     # ユーザー情報登録
     user = User.objects.create_user(username, email, password)
@@ -142,12 +142,21 @@ def user_store(request):
 # UserInfo_Screen
 def user_edit(request):
 
+    agent = request.META.get("HTTP_USER_AGENT", "")
+    # ユーザエージェントの情報を取得します。
+    user_agent = parse_ua(agent)
+    print("\033[94m", "UserAgent = ", user_agent, "\033[0m")
+    print('is_mobile: {0}'.format(user_agent.is_pc))  # is_mobile: False
+    print('is_tablet: {0}'.format(user_agent.is_tablet))  # is_tablet: False
+    print('is_pc: {0}'.format(user_agent.is_pc))  # is_pc: False
+
     user = request.user
     context = {
         'user' : user,
         'username': user.username,
         'email': user.email,
         'user_image': user.profile.image,
+        'user_agent': user_agent,
     }
     return render(request, 'talkapp/user_edit.html' , context)
 

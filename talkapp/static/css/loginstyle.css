@@ -130,3 +130,7 @@ form {
   transition: border-color 0.3s;
   width: 100%;
 }
+
+::-webkit-input-placeholder {
+    color: #ccc;
+}

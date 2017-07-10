@@ -1,41 +1,42 @@
 {% extends "base.html" %}
 
 {% block title %}
-ユーザー情報更新
+UserInfo Update
 {% endblock %}
 
 {% block content %}
-<div class="row">
-  <div class="col-md-8 col-md-offset-2">
-    <h1>ユーザー情報更新</h1>
-    <p><h5>修正する項目を入力してください。</h5></p>
-    <h6 class="text-danger">{{ message_title }}{{ message }}</h6>
-    <form action="{% url 'talkapp:user_update' %}" method="post" enctype="multipart/form-data">
-      <div class="form-group">
-        <label class="label-required-text" for="Name">名前</label>
-        <input type="text" name="name" class="form-control" id="Name" value={{ username }}>
-      </div>
-      <div class="form-group">
-        <label class="label-required-text" for="Email">メール</label>
-        <input type="text" name="email" style="visibility: hidden; top: -100px; left: -100px;" />
-        <input type="text" name="email" class="form-control" id="Email" value={{ email }}>
-      </div>
-      <div class="form-group">
-        <label class="label-required-text" for="Password">現在のパスワード</label>
-        <input type="password" name="check_password" class="form-control" id="check_Password">
-      </div>
-      <div class="form-group">
-        <label class="label-required-text" for="Password">新しいパスワード（変更しない場合は、現在のパスワードと同様にして下さい）</label>
-        <input type="password" name="password" class="form-control" id="Password">
-      </div>
-      <div class="form-group">
-        <label class="label-required-text" for="ImageFile">プロフィール画像</label><br>
-        <img class="" src="/static/images/{{ user_image }}" width=64 height=64>
-        <input type="file" name="file" id="ImageFile">
-      </div>
-      <button type="submit" class="btn btn-primary">登録</button>
+<div class="col-md-3 col-xs-0"></div>
+<div class="form-wrapper col-md-6 col-xs-12 panel panel-default">
+  <h1>UserInfo Update</h1>
+  {{ message_title }}{{ message }}
+  <form action="{% url 'talkapp:user_update' %}" method="post">
+    <div class="form-item">
+      <label for="Name"></label>
+      <input type="text" name="name" required="required" placeholder="Name"  value={{ username }}></input>
+    </div>
+    <div class="form-item">
+      <label for="email"></label>
+      <input type="email" name="email" required="required" placeholder="Email Address" value={{ email }}></input>
+    </div>
+    <div class="form-item">
+      <label for="password"></label>
+      <input type="password" name="check_password" required="required" placeholder="Password"></input>
+    </div>
+    <div class="form-item">
+      <label for="password"></label>
+      <input type="password" name="password" required="required" placeholder="Update Password"></input>
+    </div>
+    {% if user_agent.is_pc %}
+    <div class="form-item">
+      <label for="ImageFile" filetype="filetype">Photo Image</label>
+      <input type="file" name="file" id="ImageFile" filetype="filetype">
+    </div>
+    {% endif %}
+    <div class="button-panel">
+      <input type="submit" class="button btn-primary" title="Update" value="Update"></input>
       {% csrf_token %}
-    </form>
-  </div>
+    </div>
+  </form>
+  <div class="form-footer"></div>
 </div>
 {% endblock %}

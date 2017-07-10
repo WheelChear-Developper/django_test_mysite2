@@ -47,14 +47,20 @@ form {
   color: #666;
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
-  height: 50px;
+  height: 40px;
   transition: border-color 0.3s;
   width: 100%;
+  -webkit-appearance: none;
+   border-radius: 0;
 }
 
 .form-item input:focus {
   border-bottom: 2px solid #c0c0c0;
   outline: none;
+}
+
+.form-item label {
+    color: #666;
 }
 
 .button-panel {
@@ -75,6 +81,10 @@ form {
   text-transform: uppercase;
   transition: background 0.3s ease-in-out;
   width: 100%;
+
+  border-radius: 5px;          /* CSS3 */
+  -moz-border-radius: 5px;      /* firefox */
+  -webkit-border-radius: 5px;   /* safari */
 }
 
 .button:hover {
@@ -95,4 +105,28 @@ form {
 
 .form-footer a:hover {
   border-bottom: 1px dotted #8c8c8c;
+}
+
+.form-item label[filetype] {
+  background: #fafafa;
+  color: #8c8c8c;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: normal;
+  font-size: 16px;
+  height: 20px;
+  transition: border-color 0.3s;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.form-item input[filetype] {
+  background: #fafafa;
+  border: none;
+  border-bottom: 0px solid #e9e9e9;
+  color: #000;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+  height: 30px;
+  transition: border-color 0.3s;
+  width: 100%;
 }

@@ -9,10 +9,11 @@ from django.contrib.auth import authenticate, login, logout
 from . import forms
 # サーバーの画像ファイル削除必要用
 import os
-#時間情報用
+# 時間情報用
 from datetime import datetime
-
-# モデル取得用
+# ユーザーエージェント確認用
+from user_agents import parse as parse_ua
+# モデル
 from talkapp.models import PostMessage, Profile
 
 
@@ -25,7 +26,16 @@ def home(request):
 
 # UserInfoNew_Screen
 def user_create(request):
-    return render(request, 'talkapp/user_create.html')
+    
+    agent = request.META.get("HTTP_USER_AGENT", "")
+    # ユーザエージェントの情報を取得します。
+    user_agent = parse_ua(agent)
+    print("\033[94m", "UserAgent = ", user_agent, "\033[0m")
+    print('is_mobile: {0}'.format(user_agent.is_pc))  # is_mobile: False
+    print('is_tablet: {0}'.format(user_agent.is_tablet))  # is_tablet: False
+    print('is_pc: {0}'.format(user_agent.is_pc))  # is_pc: False
+
+    return render(request, 'talkapp/user_create.html', { 'user_agent': user_agent})
 
 # UserInfoNewSet
 def user_store(request):

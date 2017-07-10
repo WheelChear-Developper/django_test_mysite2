@@ -31,7 +31,7 @@ def user_create(request):
     # ユーザエージェントの情報を取得します。
     user_agent = parse_ua(agent)
     print("\033[94m", "UserAgent = ", user_agent, "\033[0m")
-    print('is_mobile: {0}'.format(user_agent.is_pc))  # is_mobile: False
+    print('is_mobile: {0}'.format(user_agent.is_mobile))  # is_mobile: False
     print('is_tablet: {0}'.format(user_agent.is_tablet))  # is_tablet: False
     print('is_pc: {0}'.format(user_agent.is_pc))  # is_pc: False
 
@@ -45,9 +45,12 @@ def user_store(request):
     email = request.POST["email"]
     password = request.POST["password"]
 
+    file = request.FILES['imagefile']
+    print("\033[94m", "filename = ", file, "\033[0m")
+
     # 画像ファイルセット
-    if 'file' in request.FILES:
-        image_file = request.FILES['file']
+    if 'imagefile' in request.FILES:
+        image_file = request.FILES['imagefile']
     else:
         image_file = ''
 
@@ -146,7 +149,7 @@ def user_edit(request):
     # ユーザエージェントの情報を取得します。
     user_agent = parse_ua(agent)
     print("\033[94m", "UserAgent = ", user_agent, "\033[0m")
-    print('is_mobile: {0}'.format(user_agent.is_pc))  # is_mobile: False
+    print('is_mobile: {0}'.format(user_agent.is_mobile))  # is_mobile: False
     print('is_tablet: {0}'.format(user_agent.is_tablet))  # is_tablet: False
     print('is_pc: {0}'.format(user_agent.is_pc))  # is_pc: False
 
@@ -213,6 +216,12 @@ def user_update(request):
         return render(request, 'talkapp/user_edit.html', contdir)
     # パスワード更新
     user.set_password(request.POST["password"])
+
+    # 入力したユーザー情報
+    print("\033[94m", "username = ", user.username, "\033[0m")
+    print("\033[94m", "email = ", user.email, "\033[0m")
+    print("\033[94m", "password = ", user.password, "\033[0m")
+    print("\033[94m", "check_password = ", request.POST["check_password"], "\033[0m")
 
     # ユーザー情報保存
     user.save()

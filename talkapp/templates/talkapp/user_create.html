@@ -8,7 +8,7 @@ Sign Up
 <div class="col-md-3 col-xs-0"></div>
 <div class="form-wrapper col-md-6 col-xs-12 panel panel-default">
   <h1>Sign Up</h1>
-  {{ message_title }}{{ message }}
+  <div class="login-error">{{ message_title }}{{ message }}</div>
   <form action="{% url 'talkapp:user_store' %}" method="post" enctype="multipart/form-data">
     <div class="form-item">
       <label for="Name"></label>

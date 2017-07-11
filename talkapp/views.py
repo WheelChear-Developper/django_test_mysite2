@@ -45,12 +45,12 @@ def user_store(request):
     email = request.POST["email"]
     password = request.POST["password"]
 
-    file = request.FILES['imagefile']
-    print("\033[94m", "filename = ", file, "\033[0m")
+    file = request.FILES['file']
+    print("\033[94m", "file = ", file, "\033[0m")
 
     # 画像ファイルセット
-    if 'imagefile' in request.FILES:
-        image_file = request.FILES['imagefile']
+    if 'file' in request.FILES:
+        image_file = request.FILES['file']
     else:
         image_file = ''
 
@@ -303,7 +303,12 @@ def postlogin(request):
                 login(request, user)
                 return redirect('talkapp:post_index')
 
-    return render(request, 'talkapp/getlogin.html')
+    contdir = {
+        'message_title': 'エラー：',
+        'message': 'メールアドレス、パスワードが異なる為、ログイン出来ません。',
+    }
+
+    return render(request, 'talkapp/getlogin.html', contdir)
 
 # Loginout
 def getlogout(request):

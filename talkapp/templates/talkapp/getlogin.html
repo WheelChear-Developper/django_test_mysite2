@@ -9,7 +9,7 @@ Sign in
 <div class="form-wrapper col-md-6 col-xs-12 panel panel-default">
   <h1>Sign in</h1>
   {{ message_title }}{{ message }}
-  <form action="{% url 'talkapp:postlogin' %}" method="post">
+  <form action="{% url 'talkapp:postlogin' %}" method="post" enctype="multipart/form-data">
     <div class="form-item">
       <label for="email"></label>
       <input type="email" name="email" required="required" placeholder="Email Address"></input>
